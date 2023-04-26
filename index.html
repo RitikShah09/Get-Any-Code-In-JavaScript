@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Any Code In JavaScript</title>
+    <link rel="website icon" type="gif" href="./icons8-javascript.gif">
+    <script>
+      const apiUrl = "https://api.openai.com/v1/chat/completions";
+      const apiKey = "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";
+
+      async function postData() {
+        const message = document.getElementById("message").value;
+        console.log(message);
+
+        if (apiKey === "") {
+          console.log("You forgot to add your own key !");
+        }
+
+        fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                role: "user",
+                content: `Write a JavaScript Code For This Question: ${message}`,
+              },
+            ],
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            console.log("DONE");
+            const responseText = data.choices[0].message.content.trim();
+            document.getElementById("chat-area").innerHTML = responseText;
+          });
+      }
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Gilroy;
+      }
+      .dark {
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        background-color: #1a1a1a;
+        color: #fff;
+      }
+      .dark::-webkit-scrollbar {
+        width: 3px;
+      }
+      .dark::-webkit-scrollbar-thumb {
+        background-color: #474747;
+        border-radius: 5px;
+      }
+      .input {
+        margin: 0 auto;
+        max-height: 200px;
+        width: 80%;
+        display: block;
+        resize: none;
+        outline: none;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: 100;
+        border-radius: 5px;
+      }
+      .input::-webkit-scrollbar {
+        width: 3px;
+      }
+      .input::-webkit-scrollbar-thumb {
+        background-color: #474747;
+        border-radius: 5px;
+      }
+      h1 {
+        font-size: 25px;
+      }
+      #chat-area {
+        display: inline-block;
+        text-align: left;
+        border-radius: 5px;
+        margin-top: 20px;
+        white-space: pre-wrap;
+        width: 80%;
+        padding: 20px 0;
+        /* border: 0.6px solid #dadada43; */
+      }
+      form {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 25px 0;
+      }
+      h1,
+      h4 {
+        margin-bottom: 25px;
+        width: 80%;
+        text-align: left;
+      }
+      button {
+        cursor: pointer;
+        position: absolute;
+        top: 39%;
+        padding: 10px 20px;
+        font-weight: 500;
+        color: #fff;
+        background-color: #643fbd;
+        border-radius: 20px;
+        border: none;
+        right: 10.4%;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .input {
+          width: 90%;
+          max-height: 150px;
+          font-weight: 500;
+          font-size: 15px;
+          padding: 10px;
+        }
+        button {
+          padding: 8px 16px;
+          top: 34%;
+          right: 7%;
+        }
+        h1 {
+          margin-bottom: 15px;
+          font-size: 20px;
+          width: 90%;
+          text-align: left;
+        }
+        h4 {
+          width: 90%;
+          text-align: left;
+        }
+        #chat-area {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body class="dark">
+    <form>
+      <h1>Get Any LeetCode Solution In JavaScript || ChatGPT</h1>
+      <h4>Enter Your Code Statement :</h4>
+      <textarea class="input" id="message" cols="30" rows="10"></textarea>
+      <button type="button" onclick="postData()">Get Code</button>
+      <pre id="chat-area"></pre>
+    </form>
+  </body>
+</html>
